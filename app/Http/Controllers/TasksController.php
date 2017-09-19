@@ -16,7 +16,7 @@ class TasksController extends Controller
     public function index()
     {
         // GET /tasks
-        $tasks = Task::all();        
+        $tasks = Task::latest()->get();        
         return view('tasks.index', compact('tasks'));
     }
     
@@ -41,13 +41,11 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        // $task = new Task;
-        // $task->body = $request['body'];
-        // $task->save();
-
-        Task::create([
-            'body' => $request['body']
+        $this->validate(request(),[
+            'body' => 'required'
         ]);
+        
+        Task::create(['body' => $request['body']]);
 
         return redirect()->back()->with('message', 'Task saved!');
         
@@ -59,7 +57,7 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Task $task)
     {
         // GET /tasks/{id}
         return view('tasks.show', compact('task'));
