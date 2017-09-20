@@ -1,15 +1,8 @@
-@extends('layout.master')
+@extends('layouts.app')
 
 @section('content')
 
-
-@if(session()->has('message'))
-    <div class="alert alert-success">
-        {{ session()->get('message') }}
-    </div>
-@endif
-
-<form method="post" action="{{ url('/tasks') }}">
+<form method="post" action="/tasks">
     {{ csrf_field() }}
 
     <div class="form-group">
@@ -18,10 +11,9 @@
     </div>
 
     @include('validation.errors')
+    @include('validation.success')
 
     <input type="submit" class="btn btn-primary" value="Publish">
 </form>
-
-
 
 @endsection

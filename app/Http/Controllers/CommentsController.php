@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Task;
+use App\Comment;
 
-class TasksController extends Controller
-{  
+class CommentsController extends Controller
+{       
     /**
      * Display a listing of the resource.
      *
@@ -14,11 +15,8 @@ class TasksController extends Controller
      */
     public function index()
     {
-        // GET /tasks
-        $tasks = Task::latest()->get();        
-        return view('tasks.index', compact('tasks'));
+        //
     }
-    
 
     /**
      * Show the form for creating a new resource.
@@ -27,9 +25,7 @@ class TasksController extends Controller
      */
     public function create()
     {
-        // GET /tasks/create
-        $tasks = Task::all();        
-        return view('tasks.create', compact('tasks'));
+        //
     }
 
     /**
@@ -38,16 +34,13 @@ class TasksController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Task $task)
     {
-        $this->validate(request(),[
-            'body' => 'required'
-        ]);
-        
-        Task::create(['body' => $request['body']]);
+        $this->validate(request(), ['body' => 'required|min:2']);
 
-        return redirect()->back()->with('message', 'Task saved!');
-        
+        $task->addComment(request('body'));
+
+        return redirect()->back()->with('message', 'Comment added!');
     }
 
     /**
@@ -56,11 +49,9 @@ class TasksController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Task $task)
+    public function show($id)
     {
-        // GET /tasks/{id}
-        return view('tasks.show', compact('task'));
-        
+        //
     }
 
     /**
@@ -71,7 +62,7 @@ class TasksController extends Controller
      */
     public function edit($id)
     {
-        // GET /tasks/{id}/edit
+        //
     }
 
     /**
@@ -83,7 +74,7 @@ class TasksController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // PATCH /tasks/{id}
+        //
     }
 
     /**
@@ -94,6 +85,6 @@ class TasksController extends Controller
      */
     public function destroy($id)
     {
-        // DELETE /tasks/{id}
+        //
     }
 }
